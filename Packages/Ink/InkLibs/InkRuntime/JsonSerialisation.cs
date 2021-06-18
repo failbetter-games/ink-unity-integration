@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Ink.Parsed;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace Ink.Runtime
 {
@@ -109,6 +111,7 @@ namespace Ink.Runtime
                 writer.WriteObjectStart();
                 writer.WriteProperty("*", choicePoint.pathStringOnChoice);
                 writer.WriteProperty("flg", choicePoint.flags);
+                writer.WriteProperty("condition", choicePoint.condition ?? "");
                 writer.WriteObjectEnd();
                 return;
             }
@@ -443,8 +446,11 @@ namespace Ink.Runtime
                     var choice = new ChoicePoint ();
                     choice.pathStringOnChoice = propValue.ToString();
 
-                    if (obj.TryGetValue ("flg", out propValue))
+                    if (obj.TryGetValue("flg", out propValue))
                         choice.flags = (int)propValue;
+
+                    if (obj.TryGetValue("condition", out propValue))
+                        choice.condition = propValue.ToString();
 
                     return choice;
                 }
@@ -600,6 +606,8 @@ namespace Ink.Runtime
             choice.sourcePath = jObj ["originalChoicePath"].ToString();
             choice.originalThreadIndex = (int)jObj ["originalThreadIndex"];
             choice.pathStringOnChoice = jObj ["targetPath"].ToString();
+            choice.condition = jObj ["condition"].ToString();
+            choice.isTrue = (bool) jObj ["truthy"];
             return choice;
         }
         public static void WriteChoice(SimpleJson.Writer writer, Choice choice)
@@ -610,6 +618,8 @@ namespace Ink.Runtime
             writer.WriteProperty("originalChoicePath", choice.sourcePath);
             writer.WriteProperty("originalThreadIndex", choice.originalThreadIndex);
             writer.WriteProperty("targetPath", choice.pathStringOnChoice);
+            writer.WriteProperty("condition", choice.condition);
+            writer.WriteProperty("truthy", choice.isTrue);
             writer.WriteObjectEnd();
         }
 

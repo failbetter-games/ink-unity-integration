@@ -1,4 +1,6 @@
 ﻿
+using Ink.Parsed;
+
 namespace Ink.Runtime
 {
     /// <summary>
@@ -18,15 +20,18 @@ namespace Ink.Runtime
         /// The target path that the Story should be diverted to if
         /// this Choice is chosen.
         /// </summary>
-        public string pathStringOnChoice {
-            get {
-                return targetPath.ToString ();
+        public string pathStringOnChoice
+        {
+            get
+            {
+                return targetPath.ToString();
             }
-            set {
-                targetPath = new Path (value);
+            set
+            {
+                targetPath = new Path(value);
             }
         }
-
+      
         /// <summary>
         /// Get the path to the original choice point - where was this choice defined in the story?
         /// </summary>
@@ -40,6 +45,8 @@ namespace Ink.Runtime
         public int index { get; set; }
 
         public Path targetPath;
+        public string condition;
+        public bool isTrue;
 
         public CallStack.Thread threadAtGeneration { get; set; }
         public int originalThreadIndex;

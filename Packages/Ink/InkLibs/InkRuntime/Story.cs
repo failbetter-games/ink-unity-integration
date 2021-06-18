@@ -1020,10 +1020,13 @@ namespace Ink.Runtime
             // Don't create choice if choice point doesn't pass conditional
             if (choicePoint.hasCondition) {
                 var conditionValue = state.PopEvaluationStack ();
-                if (!IsTruthy (conditionValue)) {
-                    showChoice = false;
-                }
-            }
+                // IsTruthy does several things that are necessary.
+                // We just want to avoid choices being locked out.
+                choicePoint.isTrue = IsTruthy(conditionValue);
+            } else
+			{
+                choicePoint.isTrue = true;
+			}
 
             string startText = "";
             string choiceOnlyText = "";
@@ -1057,6 +1060,8 @@ namespace Ink.Runtime
             choice.targetPath = choicePoint.pathOnChoice;
             choice.sourcePath = choicePoint.path.ToString ();
             choice.isInvisibleDefault = choicePoint.isInvisibleDefault;
+            choice.condition = choicePoint.condition;
+            choice.isTrue = choicePoint.isTrue;
 
             // We need to capture the state of the callstack at the point where
             // the choice was generated, since after the generation of this choice
@@ -1667,7 +1672,13 @@ namespace Ink.Runtime
             // This is important in case the flow was forked by a new thread, which
             // can create multiple leading edges for the story, each of
             // which has its own context.
-            var choiceToChoose = choices [choiceIdx];
+            Choice choiceToChoose = choices [choiceIdx];
+            if (!choiceToChoose.isTrue)
+			{
+                UnityEngine.Debug.LogError("You cannot choose this choice. Its conditions are not met!!!");
+                return;
+			}
+
             if(onMakeChoice != null) onMakeChoice(choiceToChoose);
             state.callStack.currentThread = choiceToChoose.threadAtGeneration;
 

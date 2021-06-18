@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Ink.Parsed;
+using System.ComponentModel;
 
 namespace Ink.Runtime
 {
@@ -42,6 +43,8 @@ namespace Ink.Runtime
         }
 
         public bool hasCondition { get; set; }
+        public string condition { get; set; }
+        public bool isTrue { get; set; }
         public bool hasStartContent { get; set; }
         public bool hasChoiceOnlyContent { get; set; }
         public bool onceOnly { get; set; }
