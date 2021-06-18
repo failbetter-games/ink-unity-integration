@@ -145,6 +145,10 @@ namespace Ink.Runtime
         /// </summary>
         public event Action onDidContinue;
         /// <summary>
+        /// Callback for when a choice is created in runtime
+        /// </summary>
+        public event Action<Choice> onChoiceCreated;
+        /// <summary>
         /// Callback for when a choice is about to be executed
         /// </summary>
         public event Action<Choice> onMakeChoice;
@@ -901,6 +905,10 @@ namespace Ink.Runtime
                 var choice = ProcessChoice (choicePoint);
                 if (choice) {
                     state.generatedChoices.Add (choice);
+                    if (onChoiceCreated != null)
+					{
+                        onChoiceCreated.Invoke(choice);
+                    }
                 }
 
                 currentContentObj = null;

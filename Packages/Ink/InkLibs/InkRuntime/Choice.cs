@@ -47,6 +47,7 @@ namespace Ink.Runtime
         public Path targetPath;
         public string condition;
         public bool isTrue;
+        public object payload;
 
         public CallStack.Thread threadAtGeneration { get; set; }
         public int originalThreadIndex;
