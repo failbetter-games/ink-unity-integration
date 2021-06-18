@@ -10,3 +10,5 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Condition attribute to Choice and ChoicePoint. Stores the condition string for this Choice.
 - IsTrue attribute to Choice and ChoicePoint. Stores whether the condition for this Choice passed.
+- onChoiceCreated event.
+- Added payload attribute to Choice.
