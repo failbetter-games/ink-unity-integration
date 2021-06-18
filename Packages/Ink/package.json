@@ -1,11 +1,13 @@
 {
-  "name": "com.inklestudios.ink-unity-integration",
+	"name": "com.failbetter.ink-unity-integration",
   "version": "1.0.2",
   "displayName": "Ink Unity Integration",
   "description": "Unity integration for the open source ink narrative scripting language.",
   "unity": "2018.4",
   "dependencies": {},
   "keywords": [
+		"failbetter",
+		"unity",
     "ink",
     "inky",
     "inkle",
@@ -16,5 +18,16 @@
     "name": "Inkle",
     "email": "info@inklestudios.com",
     "url": "https://www.inklestudios.com/"
-  }
+  },
+  "homepage": "https://github.com/failbetter-games/ink-unity-integration",
+
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/failbetter-games/ink-unity-integration.git",
+		"directory": "ink-unity-integration/Packages/Ink"
+	},
+	"bugs": {
+		"url": "https://github.com/failbetter-games/ink-unity-integration/issues",
+		"email": "unity@failbettergames.com"
+	}
 }
