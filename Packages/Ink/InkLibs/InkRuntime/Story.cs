@@ -1017,7 +1017,6 @@ namespace Ink.Runtime
         {
             bool showChoice = true;
 
-            // Don't create choice if choice point doesn't pass conditional
             if (choicePoint.hasCondition) {
                 var conditionValue = state.PopEvaluationStack ();
                 // IsTruthy does several things that are necessary.
