@@ -104,7 +104,7 @@ namespace Ink
             return returnObj;
         }
 
-		protected Expression Expression() {
+		public Expression Expression() {
 			return Expression(minimumPrecedence:0);
 		}
 

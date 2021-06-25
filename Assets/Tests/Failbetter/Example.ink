@@ -1,3 +1,8 @@
+VAR T1 = true
+VAR T2 = 5
+
+-> start
+=== start ===
 Once upon a time...
 
  * {3 > 5} There were two choices.
@@ -5,3 +10,7 @@ Once upon a time...
 
 - They lived happily ever after.
     -> END
+
+
+=== function testFunction(name)
+~ return false

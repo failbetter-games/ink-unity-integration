@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Diagnostics;
+using Ink.Parsed;
 
 namespace Ink.Runtime
 {
@@ -1764,6 +1765,114 @@ namespace Ink.Runtime
             var result = state.CompleteFunctionEvaluationFromGame ();
             if(onCompleteEvaluateFunction != null) onCompleteEvaluateFunction(functionName, arguments, textOutput, result);
             return result;
+        }
+      
+        public object EvaluateAtRuntime(Expression expr)
+        {
+            if (expr is Ink.Parsed.VariableReference variableReference)
+            {
+                // This cast is probably not right, but we should be able to coerce it to get its truthiness/falsiness
+                return variablesState[variableReference.name];
+            }
+
+            if (expr is Ink.Parsed.Number number)
+            {
+                return number.value;
+            }
+
+            if (expr is Ink.Parsed.StringExpression stringExpr)
+			{
+                return (string) stringExpr.ToString();
+			}
+
+            if (expr is FunctionCall functionCall)
+            {
+                List<object> args = new List<object>();
+                int totalArgs = functionCall.arguments != null ? functionCall.arguments.Count : 0;
+
+                for (int i = 0; i < totalArgs; ++i)
+				{
+                    args.Add(EvaluateAtRuntime(functionCall.arguments[i]));
+                }
+
+                return EvaluateFunction(functionCall.name, args.ToArray());
+            }
+
+            if (expr is BinaryExpression binaryExpression)
+            {
+                string opName = binaryExpression.opName; // opName is "and" or "or" or "mod" or "has" or ...
+                                                         // Evaluate each side of the expression recursively
+                object lhs = EvaluateAtRuntime(binaryExpression.leftExpression);
+                object rhs = EvaluateAtRuntime(binaryExpression.rightExpression);
+                // Do some magic, defined elsewhere, to determine the runtime typs of `lhs` and `rhs` and do whatever "opName" tells us to do with the result
+                return ResultOfBinaryOperation(lhs, rhs, opName);
+            }
+
+            if (expr is UnaryExpression unary)
+			{
+                return EvaluateAtRuntime(unary.innerExpression);
+			}
+
+            return false;
+        }
+
+        protected object ResultOfBinaryOperation(object lhs, object rhs, string opName)
+		{
+            if (opName == "&&")
+			{
+                return (bool)lhs && (bool)rhs;
+			}
+            else if (opName == "||")
+			{
+                return (bool)lhs || (bool)rhs;
+			} 
+            else if (opName == "!=")
+            {
+                return lhs != rhs;
+            }
+            else if (opName == "==")
+            {
+                return lhs == rhs;
+            }
+
+            float leftValue = Convert.ToSingle(lhs);
+            float rightValue = Convert.ToSingle(rhs);
+
+            if (opName == "+")
+            {
+                return leftValue + rightValue;
+            }
+            else if (opName == "-")
+            {
+                return leftValue - rightValue;
+            }
+            else if (opName == "*")
+            {
+                return leftValue * rightValue;
+            }
+            else if (opName == "/")
+            {
+                return leftValue / rightValue;
+            }
+
+            if (opName == ">")
+			{
+                return leftValue > rightValue;
+			}
+            else if (opName == ">=")
+            {
+                return leftValue >= rightValue;
+            }
+            else if (opName == "<")
+            {
+                return leftValue < rightValue;
+            }
+            else if (opName == "<=")
+            {
+                return leftValue <= rightValue;
+            }
+
+            return null;
         }
 
         // Evaluate a "hot compiled" piece of ink content, as used by the REPL-like

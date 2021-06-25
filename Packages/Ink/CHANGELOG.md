@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.202 - 2021-06-25
+
+### Modified
+- InkParser's Expression() method is now public.
+
+### Added
+- EvaluateAtRuntime function and ResultOfBinaryOperation to evaluate Expressions at Runtime.
+
 ## 1.0.201 - 2021-06-18
 
 ### Modified
