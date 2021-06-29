@@ -1069,6 +1069,7 @@ namespace Ink.Runtime
             choice.sourcePath = choicePoint.path.ToString ();
             choice.isInvisibleDefault = choicePoint.isInvisibleDefault;
             choice.condition = choicePoint.condition;
+            choice.tags = choicePoint.tags;
             choice.isTrue = choicePoint.isTrue;
 
             // We need to capture the state of the callstack at the point where

@@ -112,6 +112,7 @@ namespace Ink
             choice.indentationDepth = bullets.Count;
             choice.hasWeaveStyleInlineBrackets = hasWeaveStyleInlineBrackets;
             choice.condition = conditionExpr;
+            choice.tags = tags;
             choice.onceOnly = onceOnlyChoice;
             choice.isInvisibleDefault = emptyContent;
 

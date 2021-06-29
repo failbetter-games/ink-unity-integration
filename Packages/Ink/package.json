@@ -1,6 +1,6 @@
 {
 	"name": "com.failbetter.ink-unity-integration",
-  "version": "v1.0.202",
+  "version": "v1.0.203",
   "displayName": "Failbetter Ink Unity Integration",
   "description": "Unity integration for the open source ink narrative scripting language.",
   "unity": "2020.1",

@@ -6,8 +6,8 @@ VAR T2 = 5
 Once upon a time...
 
  * {3 > 5} There were two choices.
- * There were four lines of content.
 
+ * There were four lines of content. # A tag # Another tag
 - They lived happily ever after.
     -> END
 

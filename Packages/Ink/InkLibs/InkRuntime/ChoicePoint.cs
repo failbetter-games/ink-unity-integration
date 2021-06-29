@@ -1,4 +1,5 @@
 ﻿using Ink.Parsed;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace Ink.Runtime
@@ -44,6 +45,7 @@ namespace Ink.Runtime
 
         public bool hasCondition { get; set; }
         public string condition { get; set; }
+        public List<string> tags { get; set; }
         public bool isTrue { get; set; }
         public bool hasStartContent { get; set; }
         public bool hasChoiceOnlyContent { get; set; }

@@ -38,7 +38,7 @@ public class Reader : MonoBehaviour
     {
 		while (_story.canContinue)
 		{
-			Debug.Log(_story.Continue());
+			Debug.Log(_story.Continue() + JoinTags(_story.currentTags));
 		}
 
 		if (_story.currentChoices.Count > 0)
@@ -46,12 +46,26 @@ public class Reader : MonoBehaviour
 			for (int i = 0; i < _story.currentChoices.Count; ++i)
 			{
 				Ink.Runtime.Choice choice = _story.currentChoices[i];
-				Debug.Log($"{choice.condition} [{choice.isTrue}] {choice.text}");
+				Debug.Log($"{choice.condition} [{choice.isTrue}] {choice.text}" + JoinTags(choice.tags));
 			}
+			Debug.Log("Select 2 >");
+			_story.ChooseChoiceIndex(1);
+			Read();
 		}
 		else
 		{
 			Debug.Log("FIN");
 		}
+
+	}
+
+	string JoinTags(List<string> tags)
+	{
+		if (tags == null || tags.Count <= 0)
+		{
+			return "";
+		}
+
+		return " - Tags: " + string.Join(", ", tags);
 	}
 }

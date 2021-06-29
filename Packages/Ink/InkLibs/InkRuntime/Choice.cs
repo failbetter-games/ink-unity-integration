@@ -1,5 +1,6 @@
 ﻿
 using Ink.Parsed;
+using System.Collections.Generic;
 
 namespace Ink.Runtime
 {
@@ -46,6 +47,7 @@ namespace Ink.Runtime
 
         public Path targetPath;
         public string condition;
+        public List<string> tags;
         public bool isTrue;
         public object payload;
 

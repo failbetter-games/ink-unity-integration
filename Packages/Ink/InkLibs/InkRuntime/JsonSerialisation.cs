@@ -112,6 +112,10 @@ namespace Ink.Runtime
                 writer.WriteProperty("*", choicePoint.pathStringOnChoice);
                 writer.WriteProperty("flg", choicePoint.flags);
                 writer.WriteProperty("condition", choicePoint.condition ?? "");
+                if (choicePoint.tags != null)
+                {
+                    writer.WriteProperty("#", String.Join("%", choicePoint.tags));
+                }
                 writer.WriteObjectEnd();
                 return;
             }
@@ -451,6 +455,11 @@ namespace Ink.Runtime
 
                     if (obj.TryGetValue("condition", out propValue))
                         choice.condition = propValue.ToString();
+
+                    if (obj.TryGetValue("#", out propValue))
+                    {
+                        choice.tags = propValue.ToString().Split('%').ToList();
+                    }
 
                     return choice;
                 }

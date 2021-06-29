@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
 
 namespace Ink.Parsed
 {
@@ -28,6 +29,7 @@ namespace Ink.Parsed
             }
         }
 
+        public List<Tag> tags { get; set; }
         public bool onceOnly { get; set; }
         public bool isInvisibleDefault { get; set; }
 
@@ -201,6 +203,17 @@ namespace Ink.Parsed
                 _runtimeChoice.hasCondition = true;
                 _runtimeChoice.condition = condition ? condition.ToString() : "";
             }
+
+            if (tags != null)
+			{
+                List<string> runtimeTags = new List<string>();
+				for (int i = 0; i < tags.Count; ++i)
+				{
+                    Runtime.Tag tag = (Runtime.Tag)tags[i].runtimeObject;
+                    runtimeTags.Add(tag.text);
+				}
+                _runtimeChoice.tags = runtimeTags;
+			}
 
             if (startContent || choiceOnlyContent || condition)
             {

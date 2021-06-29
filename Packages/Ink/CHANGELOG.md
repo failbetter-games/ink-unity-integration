@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.203 - 2021-06-29
+
+### Added
+- Tags to Choices at Runtime. Accesible through choice.tags.
+
+
 ## 1.0.202 - 2021-06-25
 
 ### Modified
@@ -9,6 +15,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - EvaluateAtRuntime function and ResultOfBinaryOperation to evaluate Expressions at Runtime.
+
 
 ## 1.0.201 - 2021-06-18
 
