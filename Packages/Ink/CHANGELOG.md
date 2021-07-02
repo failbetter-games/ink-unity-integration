@@ -4,7 +4,6 @@ All notable changes to this project will be documented in this file.
 
 ## 1.0.204 - 2021-07-02
 
-
 ### Modified
 - EvaluateAtRuntime now takes UnaryExpressions into account.
 
