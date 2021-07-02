@@ -2,14 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
-## 1.0.204 - 2021-07-02
+## 1.0.205 - 2021-07-02
 
 ### Modified
 - EvaluateAtRuntime now takes UnaryExpressions into account.
 
 ### Fixed
-- ResultOfBinaryOperation: Equal operation was not using .Equals(...).
 - EvaluateAtRuntime: Ink's transforms true into True, which results to null. This is now taken into account.
+
+
+## 1.0.204 - 2021-07-02
+
+### Fixed
+- ResultOfBinaryOperation: Equal operation was not using .Equals(...).
 
 
 ## 1.0.203 - 2021-06-29
