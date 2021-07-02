@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.204 - 2021-07-02
+
+### Fixed
+- ResultOfBinaryOperation: Equal operation was not using .Equals(...).
+
+
 ## 1.0.203 - 2021-06-29
 
 ### Added

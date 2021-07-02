@@ -1829,11 +1829,11 @@ namespace Ink.Runtime
 			} 
             else if (opName == "!=")
             {
-                return lhs != rhs;
+                return !lhs.Equals(rhs);
             }
             else if (opName == "==")
             {
-                return lhs == rhs;
+                return lhs.Equals(rhs);
             }
 
             float leftValue = Convert.ToSingle(lhs);
