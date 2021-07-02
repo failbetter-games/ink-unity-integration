@@ -1772,6 +1772,16 @@ namespace Ink.Runtime
         {
             if (expr is Ink.Parsed.VariableReference variableReference)
             {
+                if (variableReference.name.Equals("True"))
+				{
+                    return true;
+				}
+
+                if (variableReference.name.Equals("False"))
+                {
+                    return false;
+                }
+
                 // This cast is probably not right, but we should be able to coerce it to get its truthiness/falsiness
                 return variablesState[variableReference.name];
             }
@@ -1811,7 +1821,8 @@ namespace Ink.Runtime
 
             if (expr is UnaryExpression unary)
 			{
-                return EvaluateAtRuntime(unary.innerExpression);
+                object result = EvaluateAtRuntime(unary.innerExpression);
+                return ResultOfUnaryOperation(result, unary.op);
 			}
 
             return false;
@@ -1875,6 +1886,15 @@ namespace Ink.Runtime
 
             return null;
         }
+
+        protected object ResultOfUnaryOperation(object value, string opName)
+		{
+            if (opName == "!" || opName == "not") {
+                return !((bool)value);
+			}
+
+            return value; // Unknown opName.
+		}
 
         // Evaluate a "hot compiled" piece of ink content, as used by the REPL-like
         // CommandLinePlayer.

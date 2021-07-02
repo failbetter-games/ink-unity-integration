@@ -5,9 +5,9 @@ VAR T2 = 5
 === start ===
 Once upon a time...
 
- * {3 > 5} There were two choices.
+ * {T1 == true} There were two choices.
 
- * There were four lines of content. # A tag # Another tag
+ * {!T1}There were four lines of content. # A tag # Another tag
 - They lived happily ever after.
     -> END
 

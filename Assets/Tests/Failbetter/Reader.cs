@@ -22,13 +22,16 @@ public class Reader : MonoBehaviour
 		
 		Read();
 
-		TestCondition();
+		string condition = "testFunction(\"hello\") && (T2 + 2 >= 7)";
+		TestCondition(condition);
 	}
 
-	void TestCondition()
+	void TestCondition(string condition)
 	{
-		string condition = "testFunction(\"hello\") && (T2 + 2 >= 7)";
-
+		if (string.IsNullOrEmpty(condition))
+		{
+			return;
+		}
 		InkParser p = new InkParser(condition);
 		Expression rootExpression = p.Expression();
 		Debug.Log($"{condition} => {_story.EvaluateAtRuntime(rootExpression)}");
@@ -47,10 +50,8 @@ public class Reader : MonoBehaviour
 			{
 				Ink.Runtime.Choice choice = _story.currentChoices[i];
 				Debug.Log($"{choice.condition} [{choice.isTrue}] {choice.text}" + JoinTags(choice.tags));
+				TestCondition(choice.condition);
 			}
-			Debug.Log("Select 2 >");
-			_story.ChooseChoiceIndex(1);
-			Read();
 		}
 		else
 		{
