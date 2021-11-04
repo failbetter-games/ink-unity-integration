@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.206 - 2021-11-04
+
+### Modified
+- onChoiceCreated now triggers even if Choice is null, allowing Unity to adjust accordingly for payloads.
+
+
 ## 1.0.205 - 2021-07-02
 
 ### Modified

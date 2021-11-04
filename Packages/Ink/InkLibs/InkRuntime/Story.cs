@@ -906,12 +906,12 @@ namespace Ink.Runtime
                 var choice = ProcessChoice (choicePoint);
                 if (choice) {
                     state.generatedChoices.Add (choice);
-                    if (onChoiceCreated != null)
-					{
-                        onChoiceCreated.Invoke(choice);
-                    }
                 }
 
+                if (onChoiceCreated != null)
+                {
+                    onChoiceCreated.Invoke(choice); // Invoke even if null so Unity can react accordingly to discarded choices.
+                }
                 currentContentObj = null;
                 shouldAddToStream = false;
             }

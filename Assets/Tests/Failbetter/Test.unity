@@ -338,7 +338,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1445871201}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c332048ea97b7a46b603e0734ec67b2, type: 3}
+  m_Script: {fileID: 11500000, guid: fa32569fba59b904b887c415511dbd11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _storyFile: {fileID: 4900000, guid: 99ca39d363594cc46a2fec760b0c6dfa, type: 3}
+  _storyFile: {fileID: 4900000, guid: 7a3d291425bfedf42986afb32f9321b5, type: 3}

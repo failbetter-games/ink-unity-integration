@@ -10,7 +10,7 @@ using UnityEditor;
 using UnityEngine;
 
 
-public class Reader : MonoBehaviour
+public class BasicExampleReader : MonoBehaviour
 {
     [SerializeField] private TextAsset _storyFile;
 
