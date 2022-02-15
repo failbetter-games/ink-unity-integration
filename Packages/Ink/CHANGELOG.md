@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.207 - 2022-02-15
+
+### Added
+- EvaluateExternalFunction method at Ink.Runtime.Story, which allows to test external calls from Unity. 
+
+### Fixed
+- EvaluateAtRuntime was not able to evaluate external functions. 
+
+
 ## 1.0.206 - 2021-11-04
 
 ### Modified

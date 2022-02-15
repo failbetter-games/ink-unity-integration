@@ -1806,7 +1806,10 @@ namespace Ink.Runtime
                     args.Add(EvaluateAtRuntime(functionCall.arguments[i]));
                 }
 
-                return EvaluateFunction(functionCall.name, args.ToArray());
+                // Get the content that we need to run
+                Container funcContainer = KnotContainerWithName(functionCall.name);
+                return (funcContainer != null) ? EvaluateFunction(functionCall.name, args.ToArray())
+                                                : EvaluateExternalFunction(functionCall.name, args.ToArray());
             }
 
             if (expr is BinaryExpression binaryExpression)
@@ -1826,6 +1829,19 @@ namespace Ink.Runtime
 			}
 
             return false;
+        }
+
+        public object EvaluateExternalFunction(string funcName, object[] args)
+        {
+            ExternalFunctionDef funcDef;
+
+            bool foundExternal = _externals.TryGetValue(funcName, out funcDef);
+            if (!foundExternal)
+            {
+                throw new System.Exception("Function doesn't exist: '" + funcName + "'");
+            }
+
+            return funcDef.function(args);
         }
 
         protected object ResultOfBinaryOperation(object lhs, object rhs, string opName)
