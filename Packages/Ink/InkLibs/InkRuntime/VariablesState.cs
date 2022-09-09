@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Ink.Runtime
 {
@@ -405,8 +406,10 @@ namespace Ink.Runtime
         }
 
         Dictionary<string, Runtime.Object> _globalVariables;
+        public List<string> GlobalVariables { get => _globalVariables != null ? _globalVariables.Keys.ToList() : null; }
 
         Dictionary<string, Runtime.Object> _defaultGlobalVariables;
+        public List<string> DefaultGlobalVariables { get => _defaultGlobalVariables != null ? _defaultGlobalVariables.Keys.ToList() : null; }
 
         // Used for accessing temporary variables
         CallStack _callStack;

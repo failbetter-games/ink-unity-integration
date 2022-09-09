@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.208 - 2022-09-09
+
+### Modified
+- Default and Global variable names are no accesible through VariablesState.
+
 ## 1.0.207 - 2022-02-15
 
 ### Added
