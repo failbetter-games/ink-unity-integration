@@ -1,0 +1,17 @@
+name: Publish
+on:
+    push:
+      tags: 'v[0-9]+.[0-9]+.[0-9]+'
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: https://packages.failbettergames.com
+      - run: npm publish
+        working-directory: ./Packages/Ink/
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.VERDACCIO_AUTH_TOKEN}}
