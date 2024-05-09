@@ -49,5 +49,11 @@ namespace Ink.Parsed
 
             container.AddContent(new Runtime.ListValue (runtimeRawList));
         }
-    }
+
+		public override string ToString()
+		{
+            string list = string.Join(",", itemIdentifierList);
+			return $"({list})";
+		}
+	}
 }

@@ -22,8 +22,8 @@ public class BasicExampleReader : MonoBehaviour
 		
 		Read();
 
-		string condition = "testFunction(\"hello\") && (T2 + 2 >= 7)";
-		TestCondition(condition);
+		//string condition = "kettleState == cold";
+		//TestCondition(condition);
 	}
 
 	void TestCondition(string condition)
@@ -33,6 +33,8 @@ public class BasicExampleReader : MonoBehaviour
 			return;
 		}
 		InkParser p = new InkParser(condition);
+
+
 		Expression rootExpression = p.Expression();
 		Debug.Log($"{condition} => {_story.EvaluateAtRuntime(rootExpression)}");
 	}

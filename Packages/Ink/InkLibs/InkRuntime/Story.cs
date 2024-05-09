@@ -12,7 +12,7 @@ namespace Ink.Runtime
     /// A Story is the core class that represents a complete Ink narrative, and
     /// manages the evaluation and state of it.
     /// </summary>
-	public class Story : Runtime.Object
+	public partial class Story : Runtime.Object
 	{
         /// <summary>
         /// The current version of the ink story file format.
@@ -1698,7 +1698,8 @@ namespace Ink.Runtime
         /// Checks if a function exists.
         /// </summary>
         /// <returns>True if the function exists, else false.</returns>
-        /// <param name="functionName">The name of the function as declared in ink.</param>
+        /// <param name="functionName">The name of the function as declared in ink.</param>+		itemIdentifierList	Count = 1	System.Collections.Generic.List<Ink.Parsed.Identifier>
+
         public bool HasFunction (string functionName)
         {
             try {
@@ -1768,149 +1769,6 @@ namespace Ink.Runtime
             return result;
         }
       
-        public object EvaluateAtRuntime(Expression expr)
-        {
-            if (expr is Ink.Parsed.VariableReference variableReference)
-            {
-                if (variableReference.name.Equals("True"))
-				{
-                    return true;
-				}
-
-                if (variableReference.name.Equals("False"))
-                {
-                    return false;
-                }
-
-                // This cast is probably not right, but we should be able to coerce it to get its truthiness/falsiness
-                return variablesState[variableReference.name];
-            }
-
-            if (expr is Ink.Parsed.Number number)
-            {
-                return number.value;
-            }
-
-            if (expr is Ink.Parsed.StringExpression stringExpr)
-			{
-                return (string) stringExpr.ToString();
-			}
-
-            if (expr is FunctionCall functionCall)
-            {
-                List<object> args = new List<object>();
-                int totalArgs = functionCall.arguments != null ? functionCall.arguments.Count : 0;
-
-                for (int i = 0; i < totalArgs; ++i)
-				{
-                    args.Add(EvaluateAtRuntime(functionCall.arguments[i]));
-                }
-
-                // Get the content that we need to run
-                Container funcContainer = KnotContainerWithName(functionCall.name);
-                return (funcContainer != null) ? EvaluateFunction(functionCall.name, args.ToArray())
-                                                : EvaluateExternalFunction(functionCall.name, args.ToArray());
-            }
-
-            if (expr is BinaryExpression binaryExpression)
-            {
-                string opName = binaryExpression.opName; // opName is "and" or "or" or "mod" or "has" or ...
-                                                         // Evaluate each side of the expression recursively
-                object lhs = EvaluateAtRuntime(binaryExpression.leftExpression);
-                object rhs = EvaluateAtRuntime(binaryExpression.rightExpression);
-                // Do some magic, defined elsewhere, to determine the runtime typs of `lhs` and `rhs` and do whatever "opName" tells us to do with the result
-                return ResultOfBinaryOperation(lhs, rhs, opName);
-            }
-
-            if (expr is UnaryExpression unary)
-			{
-                object result = EvaluateAtRuntime(unary.innerExpression);
-                return ResultOfUnaryOperation(result, unary.op);
-			}
-
-            return false;
-        }
-
-        public object EvaluateExternalFunction(string funcName, object[] args)
-        {
-            ExternalFunctionDef funcDef;
-
-            bool foundExternal = _externals.TryGetValue(funcName, out funcDef);
-            if (!foundExternal)
-            {
-                throw new System.Exception("Function doesn't exist: '" + funcName + "'");
-            }
-
-            return funcDef.function(args);
-        }
-
-        protected object ResultOfBinaryOperation(object lhs, object rhs, string opName)
-		{
-            if (opName == "&&")
-			{
-                return (bool)lhs && (bool)rhs;
-			}
-            else if (opName == "||")
-			{
-                return (bool)lhs || (bool)rhs;
-			} 
-            else if (opName == "!=")
-            {
-                return !lhs.Equals(rhs);
-            }
-            else if (opName == "==")
-            {
-                return lhs.Equals(rhs);
-            }
-
-            float leftValue = Convert.ToSingle(lhs);
-            float rightValue = Convert.ToSingle(rhs);
-
-            if (opName == "+")
-            {
-                return leftValue + rightValue;
-            }
-            else if (opName == "-")
-            {
-                return leftValue - rightValue;
-            }
-            else if (opName == "*")
-            {
-                return leftValue * rightValue;
-            }
-            else if (opName == "/")
-            {
-                return leftValue / rightValue;
-            }
-
-            if (opName == ">")
-			{
-                return leftValue > rightValue;
-			}
-            else if (opName == ">=")
-            {
-                return leftValue >= rightValue;
-            }
-            else if (opName == "<")
-            {
-                return leftValue < rightValue;
-            }
-            else if (opName == "<=")
-            {
-                return leftValue <= rightValue;
-            }
-
-            return null;
-        }
-
-        protected object ResultOfUnaryOperation(object value, string opName)
-		{
-            if (opName == "!" || opName == "not") {
-                return !((bool)value);
-			}
-
-            return value; // Unknown opName.
-		}
 
         // Evaluate a "hot compiled" piece of ink content, as used by the REPL-like
         // CommandLinePlayer.

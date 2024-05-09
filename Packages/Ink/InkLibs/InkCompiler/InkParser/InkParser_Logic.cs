@@ -407,9 +407,9 @@ namespace Ink
                         .AddRange ('A', 'Z')
                         .AddRange ('a', 'z')
                         .AddRange ('0', '9')
-                        .Add ('_');
-                    // Enable non-ASCII characters for story identifiers.
-                    ExtendIdentifierCharacterRanges (_identifierCharSet);
+						.Add('_');
+					// Enable non-ASCII characters for story identifiers.
+					ExtendIdentifierCharacterRanges (_identifierCharSet);
                 }
                 return _identifierCharSet;
             }
