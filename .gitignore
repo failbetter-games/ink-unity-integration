@@ -1,46 +1,51 @@
-# =============== #
-# Unity generated #
-# =============== #
-[Ll]ibrary/
-[Tt]emp/
-[Oo]bj/
-[Uu]nityGenerated/
+### Windows OS ###
 
-# =============================================== #
-# Visual Studio / MonoDevelop / Sublime generated #
-# =============================================== #
-ExportedObj/
-*.svd
-*.userprefs
-*.csproj
-*.pidb
-*.suo
-*.sln
-*.user
-*.unityproj
-*.booproj
-*.sublime-project
-/.vscode/
+# File and directory metadata
+[Dd]esktop.ini*
+Thumbs.db*
 
-# ============ #
-# OS generated #
-# ============ #
-.DS_Store
-.DS_Store?
+# Crash dump
+*.stackdump*
+
+
+
+### Mac OS ###
+
+# File and directory metadata
 ._*
-.Spotlight-V100
-.Trashes
-Icon?
-ehthumbs.db
-Thumbs.db
+.AppleDouble*
+.DS_Store*
+.fseventsd*
+.Spotlight-V100*
+.VolumeIcon.icns*
 
-# ============== #
-# Game specific  #
-# ============== #
-Bin/
+# Icon must be followed by \r only (not \r\n)
+Icon
 
-# =========== #
-# Other files #
-# =========== #
-*~
-.idea/
+# File backups
+.com.apple.timemachine.donotpresent*
+.DocumentRevisions-V100*
+.TemporaryItems*
+.Trashes*
+
+
+
+### Linux OS ###
+
+# File and directory metadata
+.directory*
+
+# File backups
+*.*~
+.fuse_hidden*
+.nfs*
+.Trash-*
+
+
+
+### Git ###
+
+*.diff*
+*.orig*
+*.patch*
+*.rej*
