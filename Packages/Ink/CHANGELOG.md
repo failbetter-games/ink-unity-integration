@@ -2,10 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.210 - 2024-05-10
+
+### Added
+- Support for InkLists and its Native Functions in the EvaluateAtRuntime function.
+
+### Modified
+- Moved custom functions to a partial class of Runtime.Story.cs.
+- Substituted literals for NativeFunctionCall constants where possible.
+
 ## 1.0.208 - 2022-09-09
 
 ### Modified
-- Default and Global variable names are no accesible through VariablesState.
+- Default and Global variable names are now accesible through VariablesState.
 
 ## 1.0.207 - 2022-02-15
 
