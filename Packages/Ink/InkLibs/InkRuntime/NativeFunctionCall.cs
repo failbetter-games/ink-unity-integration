@@ -55,8 +55,8 @@ namespace Ink.Runtime
             GenerateNativeFunctionsIfNecessary ();
             return _nativeFunctions.ContainsKey (functionName);
         }
-            
-        public string name { 
+
+		public string name { 
             get { 
                 return _name;
             } 

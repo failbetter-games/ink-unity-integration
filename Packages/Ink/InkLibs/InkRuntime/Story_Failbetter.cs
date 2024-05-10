@@ -1,6 +1,7 @@
 using Ink.Parsed;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Ink.Runtime
 {
@@ -25,13 +26,6 @@ namespace Ink.Runtime
 
 			if (expr is FunctionCall functionCall)
 			{
-				// Check Ink built-in functions first
-				if (FunctionCall.IsBuiltIn(functionCall.name))
-				{
-					// Cannot process built-in functions yet >:(
-					return false;
-				}
-
 				List<object> args = new List<object>();
 				int totalArgs = functionCall.arguments != null ? functionCall.arguments.Count : 0;
 
@@ -40,10 +34,21 @@ namespace Ink.Runtime
 					args.Add(EvaluateAtRuntime(functionCall.arguments[i]));
 				}
 
-				// Get the content that we need to run
+				// Check Ink built-in functions first
+				if (FunctionCall.IsBuiltIn(functionCall.name))
+				{
+					return EvaluateSpecialNativeFunction(functionCall.name, args.ToArray());
+				}
+
+				// Check for function written in Ink
 				Container funcContainer = KnotContainerWithName(functionCall.name);
-				return (funcContainer != null) ? EvaluateFunction(functionCall.name, args.ToArray())
-												: EvaluateExternalFunction(functionCall.name, args.ToArray());
+				if (funcContainer != null)
+				{
+					return funcContainer;
+				}
+
+				// Check for external functions 
+				return EvaluateExternalFunction(functionCall.name, args.ToArray());
 			}
 
 			if (expr is BinaryExpression binaryExpression)
@@ -77,10 +82,41 @@ namespace Ink.Runtime
 			bool foundExternal = _externals.TryGetValue(funcName, out funcDef);
 			if (!foundExternal)
 			{
-				throw new System.Exception("Function doesn't exist: '" + funcName + "'");
+				throw new System.Exception("External Function doesn't exist: '" + funcName + "'");
 			}
 
 			return funcDef.function(args);
+		}
+
+		public object EvaluateSpecialNativeFunction(string funcName, object[] args)
+		{
+			// Special Native Functions are just functions for Ink Lists,
+			// so let's handle that directly.
+			InkList list = TurnToInkList(args[0]);
+
+			// These are the same calls Ink performs at NativeFunctionCall.cs
+			switch (funcName)
+			{
+				case NativeFunctionCall.ListMin:
+					return list.MinAsList();
+
+				case NativeFunctionCall.ListMax:
+					return list.MaxAsList();
+
+				case NativeFunctionCall.All:
+					return list.all;
+
+				case NativeFunctionCall.Count:
+					return list.Count;
+
+				case NativeFunctionCall.ValueOfList:
+					return list.maxItem.Value;
+
+				case NativeFunctionCall.Invert:
+					return list.inverse;
+			}
+
+			return null;
 		}
 
 		protected object GetVariableReference(Ink.Parsed.VariableReference variableReference)
@@ -150,32 +186,21 @@ namespace Ink.Runtime
 			}
 
 			// Check Generic Functions
-			if (opName == NativeFunctionCall.And)
+			switch (opName)
 			{
-				return (bool)lhs && (bool)rhs;
-			}
-			else if (opName == NativeFunctionCall.Or)
-			{
-				return (bool)lhs || (bool)rhs;
-			}
-			else if (opName == NativeFunctionCall.NotEquals)
-			{
-				return !lhs.Equals(rhs);
-			}
-			else if (opName == NativeFunctionCall.Equal)
-			{
-				return lhs.Equals(rhs);
-			}
-			else if (opName == NativeFunctionCall.Has)
-			{
-				return lhs.Equals(rhs);
-			}
-			else if (opName == NativeFunctionCall.Hasnt)
-			{
-				return lhs.Equals(rhs);
-			}
+				case NativeFunctionCall.And:
+					return (bool)lhs && (bool)rhs;
 
+				case NativeFunctionCall.Or:
+					return (bool)lhs || (bool)rhs;
 
+				case NativeFunctionCall.NotEquals:
+					return !lhs.Equals(rhs);
+
+				case NativeFunctionCall.Equal:
+					return lhs.Equals(rhs);
+			}
+		
 			// Check Numbers
 			float leftValue = Convert.ToSingle(lhs);
 			float rightValue = Convert.ToSingle(rhs);
@@ -188,6 +213,11 @@ namespace Ink.Runtime
 			if (target is InkList)
 			{
 				return (InkList)target;
+			}
+
+			if (!(target is Ink.Runtime.Value))
+			{
+				return null;
 			}
 
 			object value = ((Ink.Runtime.Value)target).valueObject;
@@ -203,15 +233,41 @@ namespace Ink.Runtime
 		{
 			switch (opName)
 			{
+				// Modifying Operations
+				case NativeFunctionCall.Add:
+					return list.Union(otherList);
+
+				case NativeFunctionCall.Subtract:
+					return list.Without(otherList);
+
+				case NativeFunctionCall.Intersect:
+					return list.Intersect(otherList);
+
+
+				// Boolean checks
+				case NativeFunctionCall.NotEquals:
+					return !list.Equals(otherList);
+
+				case NativeFunctionCall.Equal:
+					return list.Equals(otherList);
+
+				case NativeFunctionCall.Greater:
+					return list.GreaterThan(otherList);
+
+				case NativeFunctionCall.GreaterThanOrEquals:
+					return list.GreaterThanOrEquals(otherList);
+
+				case NativeFunctionCall.Less:
+					return list.LessThan(otherList);
+
+				case NativeFunctionCall.LessThanOrEquals:
+					return list.LessThanOrEquals(otherList);
+
 				case NativeFunctionCall.Has:
 					return list.Contains(otherList);
 
 				case NativeFunctionCall.Hasnt:
 					return !list.Contains(otherList);
-
-				case NativeFunctionCall.Intersect:
-					return list.Intersect(otherList);
-
 			}
 			return null;
 		}
