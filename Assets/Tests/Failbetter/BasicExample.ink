@@ -6,6 +6,10 @@ Once upon a time...
 
 ... a kettle was {kettleState}.
 
+ * {test_function() > 0} There was a test function
+
+ * {test_function() < 0} There was not a test function
+
  * {LIST_VALUE(kettleState) == 1} Was List Value 0?
 
  * {kettleState == cold} Was the kettle cold?
@@ -22,3 +26,7 @@ Once upon a time...
 
 - They lived happily ever after.
     -> END
+
+
+=== function test_function()
+    ~ return 5

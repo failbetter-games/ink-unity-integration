@@ -1,7 +1,5 @@
 using Ink.Parsed;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Ink.Runtime
 {
@@ -26,29 +24,7 @@ namespace Ink.Runtime
 
 			if (expr is FunctionCall functionCall)
 			{
-				List<object> args = new List<object>();
-				int totalArgs = functionCall.arguments != null ? functionCall.arguments.Count : 0;
-
-				for (int i = 0; i < totalArgs; ++i)
-				{
-					args.Add(EvaluateAtRuntime(functionCall.arguments[i]));
-				}
-
-				// Check Ink built-in functions first
-				if (FunctionCall.IsBuiltIn(functionCall.name))
-				{
-					return EvaluateSpecialNativeFunction(functionCall.name, args.ToArray());
-				}
-
-				// Check for function written in Ink
-				Container funcContainer = KnotContainerWithName(functionCall.name);
-				if (funcContainer != null)
-				{
-					return funcContainer;
-				}
-
-				// Check for external functions 
-				return EvaluateExternalFunction(functionCall.name, args.ToArray());
+				return ResultOfFunction(functionCall);
 			}
 
 			if (expr is BinaryExpression binaryExpression)
@@ -73,6 +49,34 @@ namespace Ink.Runtime
 			}
 
 			return false;
+		}
+
+
+		public object ResultOfFunction(FunctionCall functionCall)
+		{
+			int totalArgs = functionCall.arguments != null ? functionCall.arguments.Count : 0;
+			object[] args = new object[totalArgs];
+
+			for (int i = 0; i < totalArgs; ++i)
+			{
+				args[i] = EvaluateAtRuntime(functionCall.arguments[i]);
+			}
+
+			// Check Ink built-in functions first
+			if (FunctionCall.IsBuiltIn(functionCall.name))
+			{
+				return EvaluateSpecialNativeFunction(functionCall.name, args);
+			}
+
+			// Check for function written in Ink
+			Container funcContainer = KnotContainerWithName(functionCall.name);
+			if (funcContainer != null)
+			{
+				return EvaluateFunction(functionCall.name, args);
+			}
+
+			// Check for external functions 
+			return EvaluateExternalFunction(functionCall.name, args);
 		}
 
 		public object EvaluateExternalFunction(string funcName, object[] args)

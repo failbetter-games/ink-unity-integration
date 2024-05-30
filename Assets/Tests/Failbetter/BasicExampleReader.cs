@@ -22,8 +22,8 @@ public class BasicExampleReader : MonoBehaviour
 		
 		Read();
 
-		//string condition = "kettleState == cold";
-		//TestCondition(condition);
+		string condition = "test_function() > 5";
+		TestCondition(condition);
 	}
 
 	void TestCondition(string condition)
